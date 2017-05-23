@@ -82,14 +82,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <ul>
                                 <li><a href="./hello">新品上架</a></li>
                                 <li class="active"><a href="./sales">热卖商品</a></li>
-                                <li><a href="about.html">关于我们</a></li>
-                                <li><%
+                                <%
                                     if (userID != null) {
-                                        out.print("<a href=\"./cart\">购物车</a>");
+                                        out.print("<li><a href=\"./cart\">购物车</a></li>");
+                                        out.print("<li><a href=\"./order\">查看订单</a></li>");
                                     } else {
-                                        out.print("<a href=\"./loginPage\">" + "登录/注册" + "</a>");
+                                        out.print("<li><a href=\"./about.html\">" + "关于我们" + "</a></li>");
+                                        out.print("<li><a href=\"./loginPage\">" + "登录/注册" + "</a></li>");
                                     }
-                                %></li>
+                                %>
                             </ul>
                         </div>
                         <a class="boxclose" id="boxclose"><img src="images/close.png" alt=""/></a>
@@ -131,12 +132,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </article>
         <article style="position: absolute; width: 100%; opacity: 0;">
             <div class="banner-wrap">
-                <h1>你弄我弄</h1>
+                <h1>南帝北丐</h1>
             </div>
         </article>
         <article style="position: absolute; width: 100%; opacity: 0;">
             <div class="banner-wrap">
-                <h1>天知地知</h1>
+                <h1>天干地支</h1>
             </div>
         </article>
     </div>
@@ -149,7 +150,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="container">
         <div class="col-md-3">
             <ul class="menu1">
-                <li class="item1">商品服务分类 </a></li>
+                <li class="item1">商品服务分类 </li>
             </ul>
             <!--initiate accordion-->
             <script type="text/javascript">

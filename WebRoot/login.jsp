@@ -144,8 +144,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </ul>
             </div>
             <ul class="box2_list">
-                <li><a href="#">最新上市</a></li>
-                <li><a href="#">热卖商品</a></li>
+                <li><a href="./sales">最新上市</a></li>
+                <li><a href="./sales">热卖商品</a></li>
 
             </ul>
         </div>

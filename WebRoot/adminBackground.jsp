@@ -1,11 +1,13 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
-%>
-
-<!DOCTYPE HTML>
+<%--
+  Created by IntelliJ IDEA.
+  User: aa444
+  Date: 2017/4/24
+  Time: 20:50
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>Login</title>
@@ -62,6 +64,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="header-bottom-right">
                 <ul class="icon1 sub-icon1 profile_img">
                     <li>
+                        <%
+                            String userID = (String) session.getAttribute("userID");
+                            if (userID != null) {
+                                out.print("<a class=\"active-icon c1\" title=\"点击登出\" href=\"logout\">当前用户：" + userID + "</a>");
+                            } else {
+                                out.print("<a class=\"active-icon c1\" href=\"loginPage\">" + "登录" + "</a>");
+                            }
+                        %>
                     </li>
                 </ul>
                 <div class="clearfix"></div>
@@ -75,7 +85,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <li><a href="./hello">新品上架</a></li>
                                 <li class="active"><a href="sales.html">热卖商品</a></li>
                                 <li><a href="about.html">关于我们</a></li>
-                                <li><a href="./loginPage">登录/注册</a></li>
+                                <li><%
+                                    if (userID != null) {
+                                        out.print("<a href=\"./cart\">购物车</a>");
+                                    } else {
+                                        out.print("<a href=\"./loginPage\">" + "登录/注册" + "</a>");
+                                    }
+                                    %>
                             </ul>
                         </div>
                         <a class="boxclose" id="boxclose"><img src="images/close.png" alt=""/></a>
@@ -137,14 +153,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </script>
             <div class="box1">
                 <ul class="box1_list">
-                    <li><a href="#">休闲</a></li>
-                    <li><a href="#">跑步</a></li>
-                    <li><a href="#">篮球</a></li>
+                    <ol>
+                    <li>商品
+                    <ul><a href="adminProductManagement">商品管理</a></ul>
+                    </li>
+                    <li>用户
+                    <ul><a href="adminUserManagement">用户管理</a></ul>
+
+                    </li>
+                    <li>订单
+                    <ul><a href="adminOrderManagement">订单管理</a></ul>
+
+                    </li>
+                    </ol>
 
                 </ul>
             </div>
             <ul class="box2_list">
-                <li><a href="./sales">最新上市</a></li>
+                <li><a href="#">最新上市</a></li>
                 <li><a href="./sales">热卖商品</a></li>
 
             </ul>
@@ -157,7 +183,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>&gt;</span>
                     </li>
                     <li class="women">
-                        操作提示
+                        后台管理
                     </li>
                 </ul>
                 <ul class="previous">
@@ -165,39 +191,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div class="register">
-                <div class="col-md-6 login-right">
-                    <p>
-                    <%
-                        String action = (String) session.getAttribute("action");
-                        String word = null;
-                        if (action.equals("login")) {
-                            word = "登录";
-                        } else if (action.equals("register")) {
-                            word = "注册";
-                        } else if (action == null) {
-                            out.print("操作");
-                        }
-                        out.print(word);
-                    %>失败，<%
-                    if (action.equals("login")) {
-                        out.print("<a href=\"./loginPage\">重新登录</a>");
-                    } else if (action.equals("register")) {
-                        out.print("<a href=\"./registerPage\">返回注册页</a>");
-                    } else if (action == null) {
-                        out.print("<a href=\"./hello\">返回首页</a>");
-                    }
-                    session.putValue("action",null);
-                %>
-                    </p>
-                </div>
-                <div class="col-md-6 login-left">
-                    <h3></h3>
-                    <p>&nbsp;</p>
 
-                </div>
-                <div class="clearfix"></div>
-            </div>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -216,4 +210,4 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </div>
 </div>
 </body>
-</html>		
+</html>

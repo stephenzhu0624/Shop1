@@ -144,7 +144,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </ul>
             </div>
             <ul class="box2_list">
-                <li><a href="./sales">最新上市</a></li>
+                <li><a href="#">最新上市</a></li>
                 <li><a href="./sales">热卖商品</a></li>
 
             </ul>
@@ -167,29 +167,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <div class="register">
                 <div class="col-md-6 login-right">
-                    <p>
-                    <%
-                        String action = (String) session.getAttribute("action");
-                        String word = null;
-                        if (action.equals("login")) {
-                            word = "登录";
-                        } else if (action.equals("register")) {
-                            word = "注册";
-                        } else if (action == null) {
-                            out.print("操作");
-                        }
-                        out.print(word);
-                    %>失败，<%
-                    if (action.equals("login")) {
-                        out.print("<a href=\"./loginPage\">重新登录</a>");
-                    } else if (action.equals("register")) {
-                        out.print("<a href=\"./registerPage\">返回注册页</a>");
-                    } else if (action == null) {
-                        out.print("<a href=\"./hello\">返回首页</a>");
-                    }
-                    session.putValue("action",null);
-                %>
-                    </p>
+
+                    操作失败，<a href="./adminBackground">点击返回后台管理</a>
+
                 </div>
                 <div class="col-md-6 login-left">
                     <h3></h3>

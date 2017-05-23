@@ -46,6 +46,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 });
 </script>
 
+	  <script language="JavaScript" type="text/JavaScript">
+          function check(form)
+          {
+              if (document.form.userID.value=="")
+              {alert("用户名不许为空");
+                  document.form.userID.focus();
+                  return false;
+              }
+              if (document.form.password.value=="")
+              {alert("密码不许为空");
+                  document.form.password.focus();
+                  return false;
+              }
+          }
+	  </script>
   </head>
   
   <body>
@@ -162,7 +177,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="clearfix"></div>
 		   </div>
 		   <div class="register">
-		  	  <form action="register" method="post">
+		  	  <form action="register" method="get">
 				 <div class="register-top-grid">
 					<h3>个人信息</h3>
 					<div>
@@ -196,8 +211,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 				<div class="clearfix"> </div>
 				<div class="register-but">
-					<form>
-					   <input type="submit" value="提交">
+
+					   <input type="submit" onclick="return check(this.form)" value="提交">
 					   <div class="clearfix"> </div>
 				   </form>
 				</div>

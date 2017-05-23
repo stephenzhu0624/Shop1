@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
+<%@ page import="org.basic.function.FunctionDaoImpl" %>
+<%@ page import="org.basic.bean.CartItem" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 导入jstl 包 -->
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -81,14 +83,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <ul>
                                 <li><a href="./hello">新品上架</a></li>
                                 <li class="active"><a href="sales.html">热卖商品</a></li>
-                                <li><a href="about.html">关于我们</a></li>
-                                <li><%
+                                <%
                                     if (userID != null) {
-                                        out.print("<a href=\"./cart\">购物车</a>");
+                                        out.print("<li><a href=\"./cart\">购物车</a></li>");
+                                        out.print("<li><a href=\"./order\">查看订单</a></li>");
                                     } else {
-                                        out.print("<a href=\"./loginPage\">" + "登录/注册" + "</a>");
+                                        out.print("<li><a href=\"./about.html\">" + "关于我们" + "</a></li>");
+                                        out.print("<li><a href=\"./loginPage\">" + "登录/注册" + "</a></li>");
                                     }
-                                %></li>
+                                %>
                             </ul>
                         </div>
                         <a class="boxclose" id="boxclose"><img src="images/close.png" alt=""/></a>
@@ -156,8 +159,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </ul>
             </div>
             <ul class="box2_list">
-                <li><a href="#">最新上市</a></li>
-                <li><a href="#">热卖商品</a></li>
+                <li><a href="./sales">最新上市</a></li>
+                <li><a href="./sales">热卖商品</a></li>
             </ul>
         </div>
         <div class="col-md-9 content_right">
@@ -188,16 +191,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                      <c:forEach items="${ci}" var="ci">
                      <tr>
-                     	<td><img src="${ci.p.p1 }" width=60% height=40%></td>
+                     	<td><img src="${ci.p.p1 }" width=30% height=20%></td>
                      	<td>${ci.p.proName }</td>
                      	<td>${ci.p.price }</td>
                      	<td>${ci.count }</td>
                      	<td>${ci.size }</td>
                      	<td><a href="./deleteFromCart?cartID=${ci.cartItemID}">删除</a></td>
                      </tr>
+                         <c:set value="${sump + ci.p.price}" var="sump" />
+                         <c:set value="${sumn + ci.count}" var="sumn" />
                      </c:forEach>
-                           
+
             </table>
+            <div style="text-align: right">
+                总价:${sump}<br>
+                总数量:${sumn}<br>
+                <%
+                    FunctionDaoImpl fdi = new FunctionDaoImpl();
+                    ArrayList<CartItem> ci = fdi.getCartItems(userID);
+                    System.out.println(ci.size());
+                    if(ci.size()!=0) {
+                        out.print("<button onclick=\"window.location='./payment'\">结算</button>");
+                    }
+    %>
+            </div>
 
             <div class="clearfix"></div>
         </div>

@@ -1,4 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
+<%@ page import="org.basic.function.FunctionDaoImpl,org.basic.bean.CartItem" %>
+<%@ page import="org.basic.bean.Product" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -8,7 +10,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Login</title>
+    <title>商品查询</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="Suity Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
@@ -62,6 +64,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="header-bottom-right">
                 <ul class="icon1 sub-icon1 profile_img">
                     <li>
+                        <%
+                            String userID = (String) session.getAttribute("userID");
+                            if (userID != null) {
+                                out.print("<a class=\"active-icon c1\" title=\"点击登出\" href=\"logout\">当前用户：" + userID + "</a>");
+                            } else {
+                                out.print("<a class=\"active-icon c1\" href=\"loginPage\">" + "登录" + "</a>");
+                            }
+                        %>
+                        <%
+
+                        %>
                     </li>
                 </ul>
                 <div class="clearfix"></div>
@@ -75,7 +88,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <li><a href="./hello">新品上架</a></li>
                                 <li class="active"><a href="sales.html">热卖商品</a></li>
                                 <li><a href="about.html">关于我们</a></li>
-                                <li><a href="./loginPage">登录/注册</a></li>
+                                <li><%
+                                    if (userID != null) {
+                                        out.print("<a href=\"./cart\">购物车</a>");
+                                    } else {
+                                        out.print("<a href=\"./loginPage\">" + "登录/注册" + "</a>");
+                                    }
+                                %></li>
                             </ul>
                         </div>
                         <a class="boxclose" id="boxclose"><img src="images/close.png" alt=""/></a>
@@ -132,7 +151,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             $(this).next().stop(true, true).slideUp('normal');
                         }
                     });
-
                 });
             </script>
             <div class="box1">
@@ -146,7 +164,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <ul class="box2_list">
                 <li><a href="./sales">最新上市</a></li>
                 <li><a href="./sales">热卖商品</a></li>
-
             </ul>
         </div>
         <div class="col-md-9 content_right">
@@ -157,7 +174,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>&gt;</span>
                     </li>
                     <li class="women">
-                        操作提示
+                        商品查询
                     </li>
                 </ul>
                 <ul class="previous">
@@ -165,55 +182,43 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div class="register">
-                <div class="col-md-6 login-right">
-                    <p>
-                    <%
-                        String action = (String) session.getAttribute("action");
-                        String word = null;
-                        if (action.equals("login")) {
-                            word = "登录";
-                        } else if (action.equals("register")) {
-                            word = "注册";
-                        } else if (action == null) {
-                            out.print("操作");
-                        }
-                        out.print(word);
-                    %>失败，<%
-                    if (action.equals("login")) {
-                        out.print("<a href=\"./loginPage\">重新登录</a>");
-                    } else if (action.equals("register")) {
-                        out.print("<a href=\"./registerPage\">返回注册页</a>");
-                    } else if (action == null) {
-                        out.print("<a href=\"./hello\">返回首页</a>");
-                    }
-                    session.putValue("action",null);
-                %>
-                    </p>
-                </div>
-                <div class="col-md-6 login-left">
-                    <h3></h3>
-                    <p>&nbsp;</p>
+            <table class="table table-responsive">
+                <tr>
+                    <th>商品图片</th>
+                    <th>商品名</th>
+                    <th>单价</th>
+                </tr>
 
-                </div>
-                <div class="clearfix"></div>
+                <%
+                    ArrayList<Product> ci = (ArrayList<Product>) session.getAttribute("productCollection");
+                    //System.out.print("size:" + ci.size() + "<");
+                    Iterator<Product> ici = ci.iterator();
+
+                    while (ici.hasNext()) {
+                        Product c = (Product) ici.next();
+                        out.print("<tr><td><img src=\"" + c.getP1() + " \" width=300px height=400px></td>");
+                        out.print("<td><a href=\"single?productID=" + c.getProductid()+"\">"+c.getProName() + "</a></td>");
+                        out.print("<td>" + c.getPrice() + "</td>");
+                        //ici.next();
+                    }
+                %>
+            </table>
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container">
+            <img src="images/f_logo.png" alt=""/>
+            <p><a href="mailto:info@mycompany.com">info(at)suity.com</a></p>
+            <div class="copy">
+                <p>Copyright &copy; 2015.Company name All rights reserved.</p>
             </div>
+            <ul class="social">
+                <li><a href="#"> <i class="fb"> </i> </a></li>
+                <li><a href="#"> <i class="tw"> </i> </a></li>
+            </ul>
         </div>
-        <div class="clearfix"></div>
     </div>
-</div>
-<div class="footer">
-    <div class="container">
-        <img src="images/f_logo.png" alt=""/>
-        <p><a href="mailto:info@mycompany.com">info(at)suity.com</a></p>
-        <div class="copy">
-            <p>Copyright &copy; 2015.Company name All rights reserved.</p>
-        </div>
-        <ul class="social">
-            <li><a href="#"> <i class="fb"> </i> </a></li>
-            <li><a href="#"> <i class="tw"> </i> </a></li>
-        </ul>
-    </div>
-</div>
 </body>
-</html>		
+</html>

@@ -1,14 +1,16 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
-%>
-
-<!DOCTYPE HTML>
+<%--
+  Created by IntelliJ IDEA.
+  User: aa444
+  Date: 2017/4/24
+  Time: 20:50
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <title>Login</title>
+    <title>订单详细信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="Suity Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
@@ -62,6 +64,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="header-bottom-right">
                 <ul class="icon1 sub-icon1 profile_img">
                     <li>
+                        <%
+                            String userID = (String) session.getAttribute("userID");
+                            if (userID != null) {
+                                out.print("<a class=\"active-icon c1\" title=\"点击登出\" href=\"logout\">当前用户：" + userID + "</a>");
+                            } else {
+                                out.print("<a class=\"active-icon c1\" href=\"loginPage\">" + "登录" + "</a>");
+                            }
+                        %>
                     </li>
                 </ul>
                 <div class="clearfix"></div>
@@ -74,8 +84,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <ul>
                                 <li><a href="./hello">新品上架</a></li>
                                 <li class="active"><a href="sales.html">热卖商品</a></li>
-                                <li><a href="about.html">关于我们</a></li>
-                                <li><a href="./loginPage">登录/注册</a></li>
+                                <%
+                                    if (userID != null) {
+                                        out.print("<li><a href=\"./cart\">购物车</a></li>");
+                                        out.print("<li><a href=\"./order\">查看订单</a></li>");
+                                    } else {
+                                        out.print("<li><a href=\"./about.html\">" + "关于我们" + "</a></li>");
+                                        out.print("<li><a href=\"./loginPage\">" + "登录/注册" + "</a></li>");
+                                    }
+                                    %>
                             </ul>
                         </div>
                         <a class="boxclose" id="boxclose"><img src="images/close.png" alt=""/></a>
@@ -145,8 +162,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <ul class="box2_list">
                 <li><a href="./sales">最新上市</a></li>
-                <li><a href="./sales">热卖商品</a></li>
-
+                <li><a href="#">热卖商品</a></li>
+                </ul>
             </ul>
         </div>
         <div class="col-md-9 content_right">
@@ -157,47 +174,35 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>&gt;</span>
                     </li>
                     <li class="women">
-                        操作提示
+                        订单详细信息
                     </li>
                 </ul>
                 <ul class="previous">
-                    <li><a href="./hello">返回上页</a></li>
+                    <li><a href="./order">返回上页</a></li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div class="register">
-                <div class="col-md-6 login-right">
-                    <p>
-                    <%
-                        String action = (String) session.getAttribute("action");
-                        String word = null;
-                        if (action.equals("login")) {
-                            word = "登录";
-                        } else if (action.equals("register")) {
-                            word = "注册";
-                        } else if (action == null) {
-                            out.print("操作");
-                        }
-                        out.print(word);
-                    %>失败，<%
-                    if (action.equals("login")) {
-                        out.print("<a href=\"./loginPage\">重新登录</a>");
-                    } else if (action.equals("register")) {
-                        out.print("<a href=\"./registerPage\">返回注册页</a>");
-                    } else if (action == null) {
-                        out.print("<a href=\"./hello\">返回首页</a>");
-                    }
-                    session.putValue("action",null);
-                %>
-                    </p>
-                </div>
-                <div class="col-md-6 login-left">
-                    <h3></h3>
-                    <p>&nbsp;</p>
-
-                </div>
-                <div class="clearfix"></div>
-            </div>
+                <table class="table table-responsive">
+                        <tr>
+                            <th>商品ID</th>
+                            <th>商品名</th>
+                            <th>单价</th>
+                            <th>尺码</th>
+                            <th>数量</th>
+                        </tr>
+                    <c:set value="0" var="sump" />
+                    <c:forEach items="${orderDetail}" var="od">
+                        <tr>
+                            <td>${od.productID}</td>
+                            <td>${od.proName}</td>
+                            <td>${od.price}</td>
+                            <td>${od.size}</td>
+                            <td>${od.count}</td>
+                        </tr>
+                        <c:set value="${sump + od.price*od.count}" var="sump" />
+                    </c:forEach>
+                    <div style="text-align: right">总价：${sump}</div>
+                </table>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -216,4 +221,4 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </div>
 </div>
 </body>
-</html>		
+</html>

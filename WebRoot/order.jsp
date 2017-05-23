@@ -1,14 +1,16 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
-%>
-
-<!DOCTYPE HTML>
+<%--
+  Created by IntelliJ IDEA.
+  User: aa444
+  Date: 2017/4/24
+  Time: 20:50
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <title>Login</title>
+    <title>订单</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="Suity Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
@@ -62,6 +64,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="header-bottom-right">
                 <ul class="icon1 sub-icon1 profile_img">
                     <li>
+                        <%
+                            String userID = (String) session.getAttribute("userID");
+                            if (userID != null) {
+                                out.print("<a class=\"active-icon c1\" title=\"点击登出\" href=\"logout\">当前用户：" + userID + "</a>");
+                            } else {
+                                out.print("<a class=\"active-icon c1\" href=\"loginPage\">" + "登录" + "</a>");
+                            }
+                        %>
                     </li>
                 </ul>
                 <div class="clearfix"></div>
@@ -74,8 +84,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <ul>
                                 <li><a href="./hello">新品上架</a></li>
                                 <li class="active"><a href="sales.html">热卖商品</a></li>
-                                <li><a href="about.html">关于我们</a></li>
-                                <li><a href="./loginPage">登录/注册</a></li>
+                                <%
+                                    if (userID != null) {
+                                        out.print("<li><a href=\"./cart\">购物车</a></li>");
+                                        out.print("<li><a href=\"./order\">查看订单</a></li>");
+                                    } else {
+                                        out.print("<li><a href=\"./about.html\">" + "关于我们" + "</a></li>");
+                                        out.print("<li><a href=\"./loginPage\">" + "登录/注册" + "</a></li>");
+                                    }
+                                    %>
                             </ul>
                         </div>
                         <a class="boxclose" id="boxclose"><img src="images/close.png" alt=""/></a>
@@ -157,7 +174,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>&gt;</span>
                     </li>
                     <li class="women">
-                        操作提示
+                        订单
                     </li>
                 </ul>
                 <ul class="previous">
@@ -165,39 +182,25 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div class="register">
-                <div class="col-md-6 login-right">
-                    <p>
-                    <%
-                        String action = (String) session.getAttribute("action");
-                        String word = null;
-                        if (action.equals("login")) {
-                            word = "登录";
-                        } else if (action.equals("register")) {
-                            word = "注册";
-                        } else if (action == null) {
-                            out.print("操作");
-                        }
-                        out.print(word);
-                    %>失败，<%
-                    if (action.equals("login")) {
-                        out.print("<a href=\"./loginPage\">重新登录</a>");
-                    } else if (action.equals("register")) {
-                        out.print("<a href=\"./registerPage\">返回注册页</a>");
-                    } else if (action == null) {
-                        out.print("<a href=\"./hello\">返回首页</a>");
-                    }
-                    session.putValue("action",null);
-                %>
-                    </p>
-                </div>
-                <div class="col-md-6 login-left">
-                    <h3></h3>
-                    <p>&nbsp;</p>
-
-                </div>
-                <div class="clearfix"></div>
-            </div>
+            <div style="text-align: right;font-size: smaller;font-family: '微软雅黑 Light'">提示：订单状态为0代表订单已确认，订单状态为1代表已发货</div>
+            <table class="table table-responsive">
+                <tr>
+                    <th>订单ID</th>
+                    <th>下单时间</th>
+                    <th>地址</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                <c:forEach items="${orders}" var="order">
+                    <tr>
+                        <td>${order.orderID}</td>
+                        <td>${order.orderTime}</td>
+                        <td>${order.orderAddress}</td>
+                        <td>${order.status}</td>
+                        <td><a href="./orderDetail?orderID=${order.orderID}">详细信息</a></td>
+                    </tr>
+                </c:forEach>
+            </table>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -216,4 +219,4 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </div>
 </div>
 </body>
-</html>		
+</html>

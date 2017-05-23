@@ -119,15 +119,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <div class="menu_box_list">
                             <ul>
                                 <li><a href="./hello">新品上架</a></li>
-                                <li class="active"><a href="sales.html">热卖商品</a></li>
-                                <li><a href="about.html">关于我们</a></li>
-                                <li><%
+                                <li class="active"><a href="./sales">热卖商品</a></li>
+                                <%
                                     if (userID != null) {
-                                        out.print("<a href=\"./cart\">购物车</a>");
+                                        out.print("<li><a href=\"./cart\">购物车</a></li>");
+                                        out.print("<li><a href=\"./order\">查看订单</a></li>");
                                     } else {
-                                        out.print("<a href=\"./loginPage\">" + "登录/注册" + "</a>");
+                                        out.print("<li><a href=\"./about.html\">" + "关于我们" + "</a></li>");
+                                        out.print("<li><a href=\"./loginPage\">" + "登录/注册" + "</a></li>");
                                     }
-                                %></li>
+                                %>
                             </ul>
                         </div>
                         <a class="boxclose" id="boxclose"><img src="images/close.png" alt=""/></a>
@@ -161,12 +162,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
     </div>
 </div>
-<%
-    String productID = request.getParameter("productID");
-    FunctionDaoImpl fdi = new FunctionDaoImpl();
-    Product p = fdi.searchProduct(productID);
-    session.setAttribute("p",p);
-%>
+
 <div class="about_top">
     <div class="container">
         <div class="col-md-3">
@@ -219,15 +215,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>&gt;</span>
                     </li>
                     <li class="home">
-                        &nbsp;<%
-                        out.print(p.getType());
-                        %>
+                        &nbsp;
+                       ${sessionScope.p.type}
+                        
                         <span>&gt;</span>
                     </li>
                     <li class="women">
-                        <%
-                            out.print(p.getProName());
-                        %>
+                        ${sessionScope.p.proName}
                     </li>
                 </ul>
                 <ul class="previous">
@@ -247,16 +241,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             </a>
                         </li>-->
                         <li>
-                            <img class="etalage_thumb_image" src="<%out.print(p.getP1());%>" class="img-responsive"/>
-                            <img class="etalage_source_image" src="<%out.print(p.getP1());%>" class="img-responsive"/>
+                            <img class="etalage_thumb_image" src=" ${sessionScope.p.p1}" class="img-responsive"/>
+                            <img class="etalage_source_image" src=" ${sessionScope.p.p1}" class="img-responsive"/>
                         </li>
                         <li>
-                            <img class="etalage_thumb_image" src="<%out.print(p.getP2());%>" class="img-responsive"/>
-                            <img class="etalage_source_image" src="<%out.print(p.getP2());%>" class="img-responsive"/>
+                            <img class="etalage_thumb_image" src=" ${sessionScope.p.p2}" class="img-responsive"/>
+                            <img class="etalage_source_image" src=" ${sessionScope.p.p2}" class="img-responsive"/>
                         </li>
                         <li>
-                            <img class="etalage_thumb_image" src="<%out.print(p.getP3());%>" class="img-responsive"/>
-                            <img class="etalage_source_image" src="<%out.print(p.getP3());%>" class="img-responsive"/>
+                            <img class="etalage_thumb_image" src=" ${sessionScope.p.p3}" class="img-responsive"/>
+                            <img class="etalage_source_image" src=" ${sessionScope.p.p3}" class="img-responsive"/>
                         </li>
                         <!--
                         <li>
@@ -275,11 +269,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </ul>
                     <!-- end product_slider -->
                 </div>
-                <form action="./add2Cart">
+                <form action="./add2Cart" method="post">
                     <div class="cont1 span_2_of_a1">
-                        <h1><%
-                            out.print(p.getProName());
-                        %></h1>
+                        <h1> ${sessionScope.p.proName}</h1>
                         <ul class="rating">
                             <li><a class="product-rate" href="#"> </a> <span> </span></li>
                             <li><a href="#"><!--1 Review(s) Add Review--></a></li>
@@ -287,14 +279,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </ul>
                         <div class="price_single">
                             <span class="reducedfrom">$140.00</span>
-                            <span class="actual"><%
-                                out.print(p.getPrice());
-                            %></span><a href="#"><!--click for offer--></a>
+                            <span class="actual"> ${sessionScope.p.price}</span><a href="#"><!--click for offer--></a>
                         </div>
                         <h2 class="quick">简介:</h2>
-                        <p class="quick_desc"> <%
-                            out.print(p.getQuickOverview());
-                        %></p>
+                        <p class="quick_desc"> 
+                            ${sessionScope.p.quickOverview}
+                        </p>
                         <ul class="size">
                             <h3>尺码：</h3>
                             <li><input name="size" class="regular-radio" type="radio" value="25" checked="checked">25</li>
@@ -321,7 +311,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <div class="login_button">
 
 
-                            <input type="submit" value="加到购物车" title="">
+                            <input type="submit" value="加到购物车">
 
             </div>
 
@@ -341,26 +331,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
                     <div class="facts">
                         <ul class="tab_list">
-                            <li><a href="#"><%
-                                out.print(p.getProductDescription());
-                            %></a></li>
+                            <li><a href="#"> ${sessionScope.p.productDescription}
+                            </a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1">
                     <div class="facts">
                         <ul class="tab_list">
-                            <li><a href="#"><%
-                                out.print(p.getAddInformation());
-                            %></a></li>
+                            <li><a href="#"> ${sessionScope.p.addInformation}</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-2">
                     <ul class="tab_list tab_last">
-                        <li><a href="#"><%
-                            out.print(p.getReviews());
-                        %></a></li>
+                        <li><a href="#"> ${sessionScope.p.reviews}
+                        </a></li>
                     </ul>
                 </div>
             </div>

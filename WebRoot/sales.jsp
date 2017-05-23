@@ -77,15 +77,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					   <div class="menu_box_list">
 						   <ul>
 							   <li><a href="./hello">新品上架</a></li>
-							   <li class="active"><a href="sales.html">热卖商品</a></li>
-							   <li><a href="about.html">关于我们</a></li>
-							   <li><a href="./loginPage"><%
+							   <li class="active"><a href="./sales">热卖商品</a></li>
+							   <%
 								   if (userID != null) {
-									   out.print("<a href=\"./cart\">购物车</a>");
+									   out.print("<li><a href=\"./cart\">购物车</a></li>");
+									   out.print("<li><a href=\"./order\">查看订单</a></li>");
 								   } else {
-									   out.print("<a href=\"./loginPage\">" + "登录/注册" + "</a>");
+									   out.print("<li><a href=\"./about.html\">" + "关于我们" + "</a></li>");
+									   out.print("<li><a href=\"./loginPage\">" + "登录/注册" + "</a></li>");
 								   }
-							   %></a></li>
+							   %>
 						   </ul>
 						</div>
 						<a class="boxclose" id="boxclose"><img src="images/close.png" alt=""/></a>
@@ -154,8 +155,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</ul>
 		</div>
 		<ul class="box2_list">
-				<li><a href="#">最新上市</a></li>
-				<li><a href="#">热卖商品</a></li>
+				<li><a href="./sales">最新上市</a></li>
+				<li><a href="./sales">热卖商品</a></li>
 		
 		 </ul>
 		</div>
@@ -182,8 +183,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			   <div class="mens-toolbar">
                  <div class="sort">
                	   <div class="sort-by">
-		            <form action="./single">
-		            	<input type ="text" name ="productID">
+		            <form action="./searchProduct">
+		            	<input type ="text" name ="keyword">
 		            	<input type="submit" value="查询商品">
 		            </form>
                    </div>
@@ -192,23 +193,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<div class="pages">   
         	 <div class="limiter visible-desktop">
                <label>Page:</label>
+
                <form action="./sales">
-            			<input type="text" name ="pageNum">页 
+            			<input type="text" name ="pageNum">页 &nbsp;商品共${itemCount}件
                     	<input type="submit">
                   </form>   
                </div>
        	   </div>
 					<div class="clearfix"></div>
 					<ul>
-					
-					
 					  <li>
 					  <c:forEach items="${products }" var="products">
 							<a class="cbp-vm-image" href="./single?productID=${products.productid }">
 							 <div class="view view-first">
 					   		  <div class="inner_content clearfix">
 								<div class="product_image">
-									<img src="images/s1.jpg" class="img-responsive" alt=""/>
+									<img src="${products.p1}" width="40%" height="30%" class="img-responsive" alt=""/>
 									<div class="product_container">
 									   <div class="cart-left">
 										 <p class="title"> ${products.proName } </p>
@@ -222,10 +222,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								  </div>
 			                     </div>
 		                      </div>
-		                  
 		                    </a>
-							
-							
 						</c:forEach>
 						</li>
 						

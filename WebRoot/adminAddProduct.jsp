@@ -1,14 +1,16 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + path + "/";
-%>
-
-<!DOCTYPE HTML>
+<%--
+  Created by IntelliJ IDEA.
+  User: aa444
+  Date: 2017/4/24
+  Time: 20:50
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <title>Login</title>
+    <title>添加商品</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="Suity Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
@@ -62,6 +64,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="header-bottom-right">
                 <ul class="icon1 sub-icon1 profile_img">
                     <li>
+                        <%
+                            String userID = (String) session.getAttribute("userID");
+                            if (userID != null) {
+                                out.print("<a class=\"active-icon c1\" title=\"点击登出\" href=\"logout\">当前用户：" + userID + "</a>");
+                            } else {
+                                out.print("<a class=\"active-icon c1\" href=\"loginPage\">" + "登录" + "</a>");
+                            }
+                        %>
                     </li>
                 </ul>
                 <div class="clearfix"></div>
@@ -75,7 +85,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <li><a href="./hello">新品上架</a></li>
                                 <li class="active"><a href="sales.html">热卖商品</a></li>
                                 <li><a href="about.html">关于我们</a></li>
-                                <li><a href="./loginPage">登录/注册</a></li>
+                                <li><%
+                                    if (userID != null) {
+                                        out.print("<a href=\"./cart\">购物车</a>");
+                                    } else {
+                                        out.print("<a href=\"./loginPage\">" + "登录/注册" + "</a>");
+                                    }
+                                    %>
                             </ul>
                         </div>
                         <a class="boxclose" id="boxclose"><img src="images/close.png" alt=""/></a>
@@ -137,15 +153,25 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </script>
             <div class="box1">
                 <ul class="box1_list">
-                    <li><a href="#">休闲</a></li>
-                    <li><a href="#">跑步</a></li>
-                    <li><a href="#">篮球</a></li>
+                    <ol>
+                        <li>商品
+                            <ul><a href="adminProductManagement">商品管理</a></ul>
+                        </li>
+                        <li>用户
+                            <ul><a href="adminUserManagement">用户管理</a></ul>
+
+                        </li>
+                        <li>订单
+                            <ul><a href="adminOrderManagement">订单管理</a></ul>
+
+                        </li>
+                    </ol>
 
                 </ul>
             </div>
             <ul class="box2_list">
-                <li><a href="./sales">最新上市</a></li>
-                <li><a href="./sales">热卖商品</a></li>
+                <li><a href="#">最新上市</a></li>
+                <li><a href="#">热卖商品</a></li>
 
             </ul>
         </div>
@@ -157,47 +183,59 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>&gt;</span>
                     </li>
                     <li class="women">
-                        操作提示
+                        添加商品
                     </li>
                 </ul>
                 <ul class="previous">
-                    <li><a href="./hello">返回上页</a></li>
+                    <li><a href="./adminProductManagement">返回上页</a></li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div class="register">
-                <div class="col-md-6 login-right">
-                    <p>
-                    <%
-                        String action = (String) session.getAttribute("action");
-                        String word = null;
-                        if (action.equals("login")) {
-                            word = "登录";
-                        } else if (action.equals("register")) {
-                            word = "注册";
-                        } else if (action == null) {
-                            out.print("操作");
-                        }
-                        out.print(word);
-                    %>失败，<%
-                    if (action.equals("login")) {
-                        out.print("<a href=\"./loginPage\">重新登录</a>");
-                    } else if (action.equals("register")) {
-                        out.print("<a href=\"./registerPage\">返回注册页</a>");
-                    } else if (action == null) {
-                        out.print("<a href=\"./hello\">返回首页</a>");
-                    }
-                    session.putValue("action",null);
-                %>
-                    </p>
-                </div>
-                <div class="col-md-6 login-left">
-                    <h3></h3>
-                    <p>&nbsp;</p>
-
-                </div>
-                <div class="clearfix"></div>
-            </div>
+            <form action="./addProduct" method="post">
+                <table class="table table-responsive">
+                        <tr>
+                            <td>商品名</td>
+                            <td><input type="text" size="50" name="proName" ></td>
+                        </tr>
+                        <tr>
+                            <td>商品图片1路径</td>
+                            <td><input type="text" size="50" name="p1" ></td>
+                        </tr>
+                        <tr>
+                            <td>商品图片2路径</td>
+                            <td><input type="text" size="50" name="p2" ></td>
+                        </tr>
+                        <tr>
+                            <td>商品图片3路径</td>
+                            <td><input type="text" size="50" name="p3" ></td>
+                        </tr>
+                        <tr>
+                            <td>单价</td>
+                            <td><input type="text" size="50" name="price" ></td>
+                        </tr>
+                        <tr>
+                            <td>简介</td>
+                            <td><input type="text" size="50" name="quickOverview" ></td>
+                        </tr>
+                        <tr>
+                            <td>商品描述</td>
+                            <td><input type="text" size="50" name="productDescription" ></td>
+                        </tr>
+                        <tr>
+                            <td>附加信息</td>
+                            <td><input type="text" size="50" name="addInformation" ></td>
+                        </tr>
+                        <tr>
+                            <td>评价</td>
+                            <td><input type="text" size="50" name="reviews" ></td>
+                        </tr>
+                        <tr>
+                            <td>类型</td>
+                            <td><input type="text" size="50" name="type" ></td>
+                        </tr>
+                </table>
+                <input type="submit" value="保存">
+            </form>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -216,4 +254,4 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </div>
 </div>
 </body>
-</html>		
+</html>
